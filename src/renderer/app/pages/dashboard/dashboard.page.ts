@@ -15,16 +15,32 @@ import { HollrService } from '../../core/hollr.service';
     @let s = hollr.state();
     @let st = hollr.settings();
     @if (s && st) {
+      <header class="page-head">
+        <h1>Dashboard</h1>
+        <p>Run polls and predictions with your voice, chat, or the box below.</p>
+      </header>
       <div class="grid">
-        <section class="card listen">
+        <section class="card listen" [class.live]="s.listening && s.stt.status === 'ready'" [class.hot]="s.gateOpen">
           <button
             class="mic-btn"
             [class.on]="s.listening"
             [class.hot]="s.gateOpen"
             (click)="hollr.api.setListening(!s.listening)"
             [title]="s.listening ? 'Click to mute' : 'Click to listen'"
+            [attr.aria-label]="s.listening ? 'Mute microphone' : 'Start listening'"
           >
-            {{ s.listening ? '🎙️' : '🔇' }}
+            <span class="ring"></span>
+            @if (s.listening) {
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" />
+                <path d="M19 11a7 7 0 0 1-14 0M12 18v3" />
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 3 18 18M9 9v3a3 3 0 0 0 5.1 2.1M15 9.3V6a3 3 0 0 0-5.7-1.3" />
+                <path d="M19 11a7 7 0 0 1-1.2 3.9M5 11a7 7 0 0 0 11.2 5.6M12 18v3" />
+              </svg>
+            }
           </button>
           <div class="stack grow">
             <div class="spread">
@@ -34,7 +50,7 @@ import { HollrService } from '../../core/hollr.service';
               }
             </div>
             <div class="muted">
-              Say <strong>"{{ st.wakeWord }}, poll win or loss"</strong> · wake word must start the sentence
+              Say <strong class="say">"{{ st.wakeWord }}, poll win or loss"</strong> · wake word must start the sentence
             </div>
             <hl-level-meter [level]="mic.level()" [live]="s.gateOpen" />
             <div class="transcript" [class.empty]="!hollr.partial()">{{ hollr.partial() || '…' }}</div>
@@ -115,19 +131,38 @@ import { HollrService } from '../../core/hollr.service';
     }
   `,
   styles: `
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    :host { display: flex; flex-direction: column; gap: 16px; }
+    .grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; }
     .full { grid-column: 1 / -1; }
-    .listen { display: flex; gap: 16px; align-items: center; }
-    .grow { flex: 1; }
-    .mic-btn { width: 88px; height: 88px; border-radius: 50%; border: 3px solid var(--border); background: var(--panel-2);
-               font-size: 36px; cursor: pointer; transition: all .2s; flex-shrink: 0; }
-    .mic-btn.on { border-color: var(--accent); }
-    .mic-btn.hot { border-color: var(--green); box-shadow: 0 0 0 6px rgba(46,204,113,.15); }
-    .transcript { font-size: 16px; font-style: italic; min-height: 24px; }
-    .transcript.empty { color: var(--muted); }
-    .pending { border-color: var(--amber); }
-    .logcard { height: 340px; display: flex; flex-direction: column; }
+    .grid > section { min-width: 0; }
+    .listen { display: flex; gap: 22px; align-items: center; overflow: hidden; }
+    .listen::before { content: ''; position: absolute; inset: -40% auto auto -10%; width: 340px; height: 340px; border-radius: 50%;
+                      background: radial-gradient(circle, rgba(145,71,255,.18), transparent 65%); opacity: 0; transition: opacity .5s; pointer-events: none; }
+    .listen.live::before { opacity: 1; }
+    .listen.hot::before { background: radial-gradient(circle, rgba(52,211,153,.2), transparent 65%); opacity: 1; }
+    .listen > * { position: relative; }
+    .grow { flex: 1; min-width: 0; }
+    .say { color: var(--fg); font-weight: 600; }
+    .mic-btn { position: relative; display: grid; place-items: center; width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;
+               border: 1px solid var(--border-strong); background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.12), rgba(255,255,255,.03));
+               color: var(--muted); cursor: pointer; transition: transform .2s var(--ease), color .2s, border-color .2s, box-shadow .3s; }
+    .mic-btn:hover { transform: scale(1.04); color: var(--fg); }
+    .mic-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+    .mic-btn.on { color: #fff; border-color: rgba(145,71,255,.7); background: var(--accent-grad); box-shadow: 0 14px 34px -10px rgba(145,71,255,.9); }
+    .mic-btn.hot { border-color: rgba(52,211,153,.8); background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 14px 34px -10px rgba(52,211,153,.9); }
+    .ring { position: absolute; inset: -6px; border-radius: 50%; border: 2px solid currentColor; opacity: 0; pointer-events: none; }
+    .mic-btn.on .ring { border-color: rgba(145,71,255,.8); animation: pulse 2.6s var(--ease) infinite; }
+    .mic-btn.hot .ring { border-color: rgba(52,211,153,.9); animation-duration: 1.2s; }
+    @keyframes pulse { 0% { transform: scale(.92); opacity: .7; } 100% { transform: scale(1.35); opacity: 0; } }
+    .transcript { font-size: 15px; min-height: 24px; padding: 8px 12px; border-radius: 10px; background: rgba(0,0,0,.25);
+                  border: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .transcript.empty { color: var(--faint); }
+    .status h3 { margin-bottom: -2px; }
+    .status .row { gap: 8px; }
+    .pending { border-color: rgba(251,191,36,.45); background: linear-gradient(180deg, rgba(251,191,36,.1), rgba(251,191,36,.03)); }
+    .logcard { height: 340px; display: flex; flex-direction: column; gap: 10px; }
     .logcard hl-activity-log { flex: 1; min-height: 0; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
   `,
 })
 export class DashboardPage {

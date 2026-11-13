@@ -41,11 +41,14 @@ import { HollrService } from '../core/hollr.service';
     }
   `,
   styles: `
-    .bar { position: relative; display: flex; justify-content: space-between; padding: 8px 12px; border-radius: 8px;
-           background: var(--panel-2); overflow: hidden; font-weight: 600; }
+    .bar { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-radius: 12px;
+           background: rgba(0, 0, 0, 0.28); border: 1px solid var(--border); overflow: hidden; font-weight: 600; }
     .bar span { position: relative; }
-    .fill { position: absolute; inset: 0 auto 0 0; background: rgba(145, 71, 255, 0.45); transition: width .4s ease; }
-    .winner .fill { background: rgba(46, 204, 113, 0.45); }
+    .bar span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 500; }
+    .fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, rgba(145, 71, 255, 0.55), rgba(145, 71, 255, 0.28));
+            transition: width .6s cubic-bezier(.2,.8,.2,1); border-right: 1px solid rgba(183, 148, 255, 0.6); }
+    .winner { border-color: rgba(52, 211, 153, 0.5); }
+    .winner .fill { background: linear-gradient(90deg, rgba(52, 211, 153, 0.5), rgba(52, 211, 153, 0.22)); border-right-color: rgba(52, 211, 153, 0.7); }
   `,
 })
 export class PollCardComponent {

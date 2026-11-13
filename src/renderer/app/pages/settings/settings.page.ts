@@ -35,7 +35,10 @@ function accelerator(e: KeyboardEvent): string | null {
   template: `
     @let s = hollr.settings();
     @if (s) {
-      <h1>Settings</h1>
+      <header class="page-head">
+        <h1>Settings</h1>
+        <p>Changes are saved automatically.</p>
+      </header>
       <div class="cols">
         <section class="card stack">
           <h3>Twitch</h3>
@@ -267,12 +270,18 @@ function accelerator(e: KeyboardEvent): string | null {
     }
   `,
   styles: `
-    .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 12px; }
+    :host { display: flex; flex-direction: column; gap: 16px; }
+    .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; align-items: start; }
+    .cols > .card { min-width: 0; }
     .wide { grid-column: 1 / -1; }
-    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .preset { display: grid; grid-template-columns: 1fr 120px 1.4fr 1.6fr 90px auto; gap: 8px; align-items: end; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .preset { display: grid; grid-template-columns: 1fr 120px 1.4fr 1.6fr 90px auto; gap: 10px; align-items: end;
+              padding: 14px; border-radius: 12px; background: rgba(0,0,0,.2); border: 1px solid var(--border); }
     .grow { flex: 1; }
-    details label { margin-top: 8px; }
+    details { border-top: 1px solid var(--border); padding-top: 12px; }
+    details summary { cursor: pointer; font-weight: 600; color: var(--muted); user-select: none; }
+    details summary:hover { color: var(--fg); }
+    details label { margin-top: 10px; }
   `,
 })
 export class SettingsPage {

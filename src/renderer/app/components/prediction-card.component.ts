@@ -41,10 +41,11 @@ import { HollrService } from '../core/hollr.service';
     }
   `,
   styles: `
-    .bar { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 6px 8px 6px 12px;
-           border-radius: 8px; background: var(--panel-2); overflow: hidden; font-weight: 600; }
+    .bar { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 8px 10px 8px 16px;
+           border-radius: 12px; background: rgba(0, 0, 0, 0.28); border: 1px solid var(--border); overflow: hidden; font-weight: 600; }
     .bar > span { position: relative; }
-    .fill { position: absolute; inset: 0 auto 0 0; opacity: .45; transition: width .4s ease; }
+    .bar > span:last-child { color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+    .fill { position: absolute; inset: 0 auto 0 0; opacity: .4; transition: width .6s cubic-bezier(.2,.8,.2,1); }
   `,
   imports: [DecimalPipe],
 })

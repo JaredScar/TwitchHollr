@@ -18,7 +18,7 @@ type Step = 0 | 1 | 2 | 3;
     @let st = hollr.settings();
     @if (s && st) {
       <div class="wrap stack">
-        <h1>Welcome to Hollr 📣</h1>
+        <h1>Welcome to Hollr</h1>
         <p class="muted">Run Twitch polls and predictions with your voice. About two minutes to set up.</p>
 
         <ol class="steps">
@@ -77,13 +77,19 @@ type Step = 0 | 1 | 2 | 3;
     }
   `,
   styles: `
-    .wrap { max-width: 760px; margin: 0 auto; width: 100%; }
-    .steps { display: flex; gap: 8px; list-style: none; padding: 0; margin: 0; counter-reset: s; }
-    .steps li { flex: 1; padding: 8px 10px; border-radius: 8px; background: var(--panel); border: 1px solid var(--border);
-                cursor: pointer; font-weight: 600; color: var(--muted); }
-    .steps li.current { border-color: var(--accent); color: var(--fg); }
+    .wrap { max-width: 760px; margin: 0 auto; width: 100%; gap: 18px; }
+    .steps { display: flex; gap: 10px; list-style: none; padding: 0; margin: 0; counter-reset: s; }
+    .steps li { flex: 1; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--panel);
+                border: 1px solid var(--border); cursor: pointer; font-weight: 600; color: var(--muted); counter-increment: s;
+                transition: border-color .18s, background .18s, color .18s; }
+    .steps li::before { content: counter(s); display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-size: 12px;
+                        background: var(--panel-3); color: var(--fg); flex-shrink: 0; }
+    .steps li:hover { background: var(--panel-2); }
+    .steps li.current { border-color: rgba(145,71,255,.7); background: rgba(145,71,255,.14); color: var(--fg); }
+    .steps li.current::before { background: var(--accent-grad); }
     .steps li.done { color: var(--green); }
-    .transcript { font-size: 18px; font-style: italic; min-height: 28px; }
+    .steps li.done::before { content: '✓'; background: rgba(52,211,153,.18); color: var(--green); }
+    .transcript { font-size: 16px; min-height: 28px; padding: 10px 14px; border-radius: 10px; background: rgba(0,0,0,.25); border: 1px solid var(--border); }
     .log { height: 200px; }
   `,
 })

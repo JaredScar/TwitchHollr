@@ -21,8 +21,11 @@ import { HollrService } from '../core/hollr.service';
     </form>
   `,
   styles: `
-    form { flex-wrap: nowrap; }
-    input { flex: 1; }
+    form { flex-wrap: nowrap; padding: 6px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid var(--border);
+           box-shadow: var(--shadow); transition: border-color .15s, box-shadow .15s; gap: 8px; }
+    form:focus-within { border-color: var(--accent); box-shadow: var(--ring); }
+    input { flex: 1; background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 10px 12px; font-size: 14.5px; }
+    .btn { padding: 10px 22px; }
   `,
 })
 export class CommandBoxComponent {
