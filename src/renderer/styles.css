@@ -16,7 +16,7 @@
   /* Brand + status */
   --accent: #9147ff;
   --accent-2: #b794ff;
-  --accent-grad: linear-gradient(135deg, #a15cff 0%, #7a35f0 55%, #5d2bd6 100%);
+  --accent-grad: #9147ff;
   --green: #34d399;
   --red: #f87171;
   --amber: #fbbf24;
@@ -25,8 +25,8 @@
 
   --radius: 16px;
   --radius-sm: 10px;
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 32px -12px rgba(0, 0, 0, 0.6);
-  --ring: 0 0 0 3px rgba(145, 71, 255, 0.35);
+  --shadow: none;
+  --ring: 0 0 0 2px rgba(145, 71, 255, 0.45);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   color-scheme: dark;
 }
@@ -39,11 +39,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background:
-    radial-gradient(900px 500px at 8% -8%, rgba(145, 71, 255, 0.16), transparent 60%),
-    radial-gradient(700px 420px at 100% 0%, rgba(79, 140, 255, 0.09), transparent 60%),
-    var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
   color: var(--fg);
   font:
     14px/1.5 'Segoe UI Variable Text',
@@ -116,7 +112,7 @@ a {
 /* Layout helpers */
 .card {
   position: relative;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025));
+  background: var(--panel-solid);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px;
@@ -187,18 +183,13 @@ a {
   cursor: default;
 }
 .btn.primary {
-  background: var(--accent-grad);
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow:
-    0 8px 20px -8px rgba(145, 71, 255, 0.7),
-    0 1px 0 rgba(255, 255, 255, 0.25) inset;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 .btn.primary:hover:not(:disabled) {
-  background: var(--accent-grad);
-  filter: brightness(1.12);
-  box-shadow:
-    0 12px 26px -8px rgba(145, 71, 255, 0.8),
-    0 1px 0 rgba(255, 255, 255, 0.25) inset;
+  background: #a566ff;
+  border-color: #a566ff;
 }
 .btn.danger {
   background: rgba(248, 113, 113, 0.1);
@@ -283,8 +274,8 @@ input[type='checkbox'] {
   height: 20px;
   margin: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid transparent;
   position: relative;
   cursor: pointer;
   transition:
@@ -301,12 +292,10 @@ input[type='checkbox']::after {
   height: 14px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   transition: transform 0.22s var(--ease);
 }
 input[type='checkbox']:checked {
-  background: var(--accent-grad);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--accent);
 }
 input[type='checkbox']:checked::after {
   transform: translateX(16px);
@@ -340,8 +329,6 @@ input[type='checkbox']:focus-visible {
 }
 .chip.ok::before {
   background: var(--green);
-  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
-  animation: ping 2.4s infinite;
 }
 .chip.warn::before {
   background: var(--amber);
@@ -349,16 +336,6 @@ input[type='checkbox']:focus-visible {
 .chip.bad::before {
   background: var(--red);
 }
-@keyframes ping {
-  0% {
-    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
-  }
-  70%,
-  100% {
-    box-shadow: 0 0 0 7px rgba(52, 211, 153, 0);
-  }
-}
-
 /* Banners */
 .banner {
   padding: 12px 16px;

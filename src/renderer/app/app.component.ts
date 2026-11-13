@@ -69,17 +69,17 @@ interface Banner {
   `,
   styles: `
     .shell { display: grid; grid-template-columns: 224px 1fr; height: 100vh; }
-    nav { display: flex; flex-direction: column; gap: 4px; padding: 20px 14px 16px; background: rgba(10, 10, 16, 0.55);
-          border-right: 1px solid var(--border); backdrop-filter: blur(14px); }
+    nav { display: flex; flex-direction: column; gap: 4px; padding: 20px 14px 16px; background: var(--panel-solid);
+          border-right: 1px solid var(--border); }
     .brand { display: flex; align-items: center; gap: 10px; padding: 2px 10px 22px; }
     .logo { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; color: #fff;
-            background: var(--accent-grad); box-shadow: 0 8px 20px -6px rgba(145, 71, 255, 0.8), 0 1px 0 rgba(255,255,255,.3) inset; }
+            background: var(--accent); }
     .name { font-size: 20px; font-weight: 750; letter-spacing: -0.02em; }
     .section-label { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); padding: 0 12px 6px; }
     nav a { position: relative; display: flex; align-items: center; gap: 12px; color: var(--muted); text-decoration: none;
             padding: 9px 12px; border-radius: 10px; font-weight: 600; transition: background .18s, color .18s; }
     nav a:hover { background: var(--panel-2); color: var(--fg); }
-    nav a.active { background: rgba(145, 71, 255, 0.16); color: #fff; box-shadow: inset 0 0 0 1px rgba(145, 71, 255, 0.35); }
+    nav a.active { background: var(--panel-2); color: #fff; }
     nav a.active svg { color: var(--accent-2); }
     nav a.active::before { content: ''; position: absolute; left: -14px; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent-grad); }
     .grow { flex: 1; }

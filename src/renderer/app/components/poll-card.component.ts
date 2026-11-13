@@ -45,10 +45,10 @@ import { HollrService } from '../core/hollr.service';
            background: rgba(0, 0, 0, 0.28); border: 1px solid var(--border); overflow: hidden; font-weight: 600; }
     .bar span { position: relative; }
     .bar span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 500; }
-    .fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, rgba(145, 71, 255, 0.55), rgba(145, 71, 255, 0.28));
-            transition: width .6s cubic-bezier(.2,.8,.2,1); border-right: 1px solid rgba(183, 148, 255, 0.6); }
+    .fill { position: absolute; inset: 0 auto 0 0; background: rgba(145, 71, 255, 0.35);
+            transition: width .6s cubic-bezier(.2,.8,.2,1); }
     .winner { border-color: rgba(52, 211, 153, 0.5); }
-    .winner .fill { background: linear-gradient(90deg, rgba(52, 211, 153, 0.5), rgba(52, 211, 153, 0.22)); border-right-color: rgba(52, 211, 153, 0.7); }
+    .winner .fill { background: rgba(52, 211, 153, 0.32); }
   `,
 })
 export class PollCardComponent {
