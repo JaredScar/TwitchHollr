@@ -1,0 +1,30 @@
+appId: tv.hollr.app
+productName: Hollr
+directories:
+  output: release/${version}
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+  - '!out/tsc-app/**'
+asar: true
+asarUnpack:
+  - '**/node_modules/sherpa-onnx-*/**'
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  artifactName: ${productName}-Setup-${version}.${ext}
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+mac:
+  target: [dmg]
+  category: public.app-category.entertainment
+  extendInfo:
+    NSMicrophoneUsageDescription: Hollr listens to your microphone for voice commands. Audio never leaves your computer.
+publish:
+  provider: github
+  owner: ${env.GH_OWNER}
+  repo: ${env.GH_REPO}

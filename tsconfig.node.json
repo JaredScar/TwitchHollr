@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2023"],
+    "types": ["node", "electron-vite/node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "paths": { "@shared/*": ["./src/shared/*"] }
+  },
+  "include": [
+    "src/main/**/*",
+    "src/shared/**/*",
+    "tests/unit/**/*",
+    "tests/stt/**/*",
+    "tests/e2e/**/*",
+    "electron.vite.config.mts",
+    "vitest.config.mts",
+    "vitest.stt.config.mts",
+    "vite.worker.config.mts",
+    "playwright.config.ts"
+  ]
+}

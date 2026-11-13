@@ -1,0 +1,14 @@
+{
+  "cmd-poll-win-loss.wav": { "kind": "poll.create", "choices": ["Win", "Loss"] },
+  "cmd-poll-duration.wav": { "kind": "poll.create", "choices": ["Cats", "Dogs"], "durationSec": 120 },
+  "cmd-poll-three.wav": { "kind": "poll.create", "choices": ["Red", "Blue", "Green"] },
+  "cmd-end-poll.wav": { "kind": "poll.end" },
+  "cmd-cancel-poll.wav": { "kind": "poll.cancel" },
+  "cmd-repeat-poll.wav": { "kind": "poll.repeat" },
+  "cmd-predict.wav": { "kind": "prediction.create" },
+  "cmd-lock.wav": { "kind": "prediction.lock" },
+  "fp-poll-chat.wav": null,
+  "fp-mid-sentence.wav": null,
+  "fp-gameplay.wav": null,
+  "fp-end.wav": null
+}

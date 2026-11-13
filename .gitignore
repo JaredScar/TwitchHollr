@@ -1,0 +1,13 @@
+node_modules/
+out/
+dist/
+release/
+.angular/
+coverage/
+test-results/
+playwright-report/
+models/
+tests/fixtures/audio/*.wav
+.env
+.env.local
+*.log
