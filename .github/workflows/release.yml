@@ -1,0 +1,135 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      draft:
+        description: Publish the release as a draft
+        type: boolean
+        default: false
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  build:
+    name: Build ${{ matrix.label }}
+    needs: test
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            label: Windows EXE and MSI
+          - os: macos-latest
+            platform: mac
+            label: macOS DMG
+          - os: ubuntu-latest
+            platform: linux
+            label: Linux AppImage and deb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Check the tag matches package.json
+        if: github.ref_type == 'tag'
+        shell: bash
+        run: |
+          expected="v$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_NAME" != "$expected" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $expected."
+            exit 1
+          fi
+      - run: npm ci
+      - name: Install macOS speech binaries for both architectures
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          version=$(node -p "require('./node_modules/sherpa-onnx-node/package.json').version")
+          npm install --no-save --force --ignore-scripts \
+            "sherpa-onnx-darwin-x64@${version}" \
+            "sherpa-onnx-darwin-arm64@${version}"
+      - run: npm run build
+      - name: Package
+        shell: bash
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          # Empty signing secrets make electron-builder look for a certificate and fail.
+          if [ -z "${CSC_LINK}" ]; then
+            export CSC_IDENTITY_AUTO_DISCOVERY=false
+            unset CSC_LINK CSC_KEY_PASSWORD APPLE_ID APPLE_APP_SPECIFIC_PASSWORD APPLE_TEAM_ID
+          fi
+          npx electron-builder --${{ matrix.platform }} --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installers-${{ matrix.platform }}
+          if-no-files-found: error
+          path: |
+            release/**/*.exe
+            release/**/*.msi
+            release/**/*.dmg
+            release/**/*.zip
+            release/**/*.AppImage
+            release/**/*.deb
+            release/**/*.blockmap
+            release/**/latest*.yml
+
+  publish:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: installers-*
+          path: release-assets
+          merge-multiple: true
+      - name: Release tag
+        id: tag
+        shell: bash
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            echo "name=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.name }}
+          name: Hollr ${{ steps.tag.outputs.name }}
+          draft: ${{ github.event_name == 'workflow_dispatch' && inputs.draft }}
+          generate_release_notes: true
+          files: release-assets/**

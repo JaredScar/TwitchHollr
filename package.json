@@ -5,6 +5,10 @@
   "description": "Voice-controlled Twitch polls and predictions, with an in-app chat bot. Speech recognition runs locally.",
   "author": "Axeex",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JaredScar/TwitchHollr.git"
+  },
   "main": "./out/main/index.js",
   "scripts": {
     "dev": "node scripts/dev.mjs",
@@ -20,8 +24,9 @@
     "test:stt": "vitest run --config vitest.stt.config.mts",
     "test:clips": "powershell -ExecutionPolicy Bypass -File scripts/make-test-clips.ps1",
     "test:e2e": "npm run build && playwright test",
-    "dist": "npm run build && electron-builder --win",
-    "dist:mac": "npm run build && electron-builder --mac",
+    "dist": "npm run build && electron-builder --win --publish never",
+    "dist:mac": "npm run build && electron-builder --mac --publish never",
+    "dist:linux": "npm run build && electron-builder --linux --publish never",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {

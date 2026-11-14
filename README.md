@@ -59,7 +59,8 @@ The model is downloaded and SHA-256 verified during the setup guide. For develop
 | `npm run test:clips` / `npm run test:stt` | Generate TTS clips and run the speech harness |
 | `npm run test:e2e` | Build and run the Playwright Electron smoke test |
 | `npm run typecheck` / `npm run lint` | Static checks |
-| `npm run dist` | Package the Windows installer (set `GH_OWNER` and `GH_REPO` for auto-update) |
+| `npm run dist` | Package the Windows EXE and MSI locally |
+| `npm run dist:mac` / `npm run dist:linux` | Package a macOS DMG or Linux AppImage and deb locally |
 
 ## Voice grammar (examples)
 
@@ -82,6 +83,23 @@ tests          Unit, STT harness, and e2e tests
 ```
 
 See [PLAN.md](PLAN.md) for the original design.
+
+## Releases
+
+GitHub Actions builds installers when you push a tag that matches `package.json`, for example `v0.1.0`, or when you run the **Release** workflow by hand. Assets land on [GitHub Releases](https://github.com/JaredScar/TwitchHollr/releases):
+
+| Platform | Files |
+| --- | --- |
+| Windows x64 | `Hollr-Setup-<version>.exe` (NSIS) and `Hollr-Setup-<version>.msi` |
+| macOS | `Hollr-<version>-arm64.dmg` and `Hollr-<version>-x64.dmg` (a `.zip` is also attached for auto-update) |
+| Linux x64 | `Hollr-<version>-x64.AppImage` and a `.deb` |
+
+The installers are unsigned, so Windows SmartScreen and macOS Gatekeeper warn on first launch until a code-signing certificate is added to the repository secrets. The packaged app checks this repository for updates.
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
 
 ## License
 
