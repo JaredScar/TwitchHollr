@@ -40,6 +40,7 @@ linux:
     - target: deb
       arch: [x64]
   category: Utility
+  maintainer: Axeex <me@jaredscarito.com>
   artifactName: ${productName}-${version}-${arch}.${ext}
 # Owner and repo come from package.json "repository", so release builds get a correct app-update.yml.
 publish:
