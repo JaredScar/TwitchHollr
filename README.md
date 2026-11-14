@@ -82,3 +82,7 @@ tests          Unit, STT harness, and e2e tests
 ```
 
 See [PLAN.md](PLAN.md) for the original design.
+
+## License
+
+[MIT](LICENSE). Use it, change it, and share it freely. Twitch Client IDs and tokens stay on your machine: copy `.env.example` to `.env` and never commit `.env`.
