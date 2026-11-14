@@ -95,10 +95,10 @@ jobs:
           name: installers-${{ matrix.platform }}
           if-no-files-found: error
           path: |
-            release/**/*.exe
-            release/**/*.msi
-            release/**/*.dmg
-            release/**/*.zip
+            release/**/Hollr-Setup-*.exe
+            release/**/Hollr-Setup-*.msi
+            release/**/Hollr-*.dmg
+            release/**/*-mac.zip
             release/**/*.AppImage
             release/**/*.deb
             release/**/*.blockmap

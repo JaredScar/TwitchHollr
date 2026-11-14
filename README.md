@@ -91,8 +91,8 @@ GitHub Actions builds installers when you push a tag that matches `package.json`
 | Platform | Files |
 | --- | --- |
 | Windows x64 | `Hollr-Setup-<version>.exe` (NSIS) and `Hollr-Setup-<version>.msi` |
-| macOS | `Hollr-<version>-arm64.dmg` and `Hollr-<version>-x64.dmg` (a `.zip` is also attached for auto-update) |
-| Linux x64 | `Hollr-<version>-x64.AppImage` and a `.deb` |
+| macOS | `Hollr-<version>-arm64.dmg` (Apple silicon) and `Hollr-<version>.dmg` (Intel). A `.zip` for each is attached for auto-update |
+| Linux x64 | `Hollr-<version>-x86_64.AppImage` and `Hollr-<version>-amd64.deb` |
 
 The installers are unsigned, so Windows SmartScreen and macOS Gatekeeper warn on first launch until a code-signing certificate is added to the repository secrets. The packaged app checks this repository for updates.
 
